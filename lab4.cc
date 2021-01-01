@@ -42,18 +42,18 @@ void FIFO()
             if(ArrayEntry[k] != ArrayReference[i])
             {
 
-//Page is not found in the main memory 
+//Page is not found in the main memory
                 PageIndex=-1;
             }
             else
             {
-                //Page is found in the main memory 
+                //Page is found in the main memory
                 PageIndex=k;
                 break;
             }
             k++;
         }
-		//If page is found in the main memory print the entry 
+        //If page is found in the main memory print the entry
         if(PageIndex != -1)
         {
             printf("\n%02d     ",ArrayReference[i]);
@@ -79,7 +79,7 @@ void FIFO()
                 ArrayEntry[CurrentIndex]=ArrayReference[i];
                 CurrentIndex++;
             }
-			//If main memory is full then we need to use page replacement algorithm to free a space to the needed page 
+            //If main memory is full then we need to use page replacement algorithm to free a space to the needed page
             else
             {
                 printf("\n%02d F   ",ArrayReference[i]);
@@ -125,17 +125,17 @@ void LRU()
 
         k=0;
         int PageNumber=0;
-		//Check if the needed page is found in the main memory or not
+        //Check if the needed page is found in the main memory or not
         while(k<=ProcessFrames-1)
         {
             if(ArrayEntry[k] != ArrayReference[i])
             {
-//Page is not found in the main memory 
+//Page is not found in the main memory
                 PageNumber=-1;
             }
             else
             {
-               //Page is found in the main memory 
+                //Page is found in the main memory
                 PageNumber=k;
                 break;
             }
@@ -143,11 +143,11 @@ void LRU()
         }
         if(PageNumber!= -1)
         {
-			
+
             printf("\n%02d     ",ArrayReference[i]);
             //Update the index of the page
             PageIndex = PageNumber;
-			//Create a map to save page indexes
+            //Create a map to save page indexes
             ArrayPriorityRequests[PageIndex]=HoldingCounter;
             HoldingCounter++;
             //Display Array entries
@@ -207,7 +207,7 @@ void LRU()
                     }
                     z++;
                 }
-				//Update the page index of the current page 
+                //Update the page index of the current page
                 ArrayEntry[MinimumValueIndex]=ArrayReference[i];
                 ArrayPriorityRequests[MinimumValueIndex]=HoldingCounter;
                 HoldingCounter++;
@@ -234,37 +234,39 @@ void OPTIMAL()
     ////RandomSlots array used to store the index of future referenced slots
     int RandomSlots[999],Current_Position,i,CurrentIndex=0;
     i=0;
-	 //initialize all entries by -1
+    //initialize all entries by -1
     while(i<=ProcessFrames-1)
     {
         ArrayEntry[i]=-1;
         i++;
     }
-	//Check if the page needed located in the main memory or not
+    //Check if the page needed located in the main memory or not
     for(i=0; i<ReferenceStringLength; i++)
     {
         int z=0;
         int PageNumber=0;
+        //Check if the needed page is found in the main memory or not
         while(z<=ProcessFrames-1)
         {
             if(ArrayEntry[z] != ArrayReference[i])
             {
-
+//Page is not found in the main memory
                 PageNumber=-1;
             }
             else
             {
-                //Return page index if the page is found
+                //Page is found in the main memory
                 PageNumber=z;
                 break;
             }
             z++;
         }
+        //Page is found in the main memory
         if(PageNumber!=-1)
         {
             printf("\n%02d     ",ArrayReference[i]);;
-            //Display Array entries
             k=0;
+            //Display Array entries
             while(k<=ProcessFrames-1)
             {
                 if(ArrayEntry[k]!=-1)
@@ -274,6 +276,7 @@ void OPTIMAL()
                 k++;
             }
         }
+        //If the page is not found in the main memory
         else
         {
             //if the ArrayEntry table still have space for pages
@@ -300,7 +303,7 @@ void OPTIMAL()
                 {
                     Current_Position=ArrayEntry[j];
                     bool Found=false;
-                    //this loop is for scanning the rest of the ArrayReference string to check for later refs
+                    //this loop is for scanning the rest of the ArrayReference string to check for later references to remove them as an estimation for which page will take the longest time to reach so we can remove it by predicting it
                     for(k=i; k<ReferenceStringLength; k++)
                     {
                         if(Current_Position==ArrayReference[k])
@@ -471,6 +474,7 @@ void CLOCK()
     printf("\n-------------------------------------");
     printf("\nNumber of page faults = %d\n",PageFaultsCounter);
 }
+//Printing the header statment
 void PrintHeader(bool Print, char * policy)
 {
     if(Print)
@@ -481,6 +485,7 @@ void PrintHeader(bool Print, char * policy)
         printf("----   -----------------");
     }
 }
+//Check if the policy is one of the main four
 bool validPolicy(char * policy)
 {
     bool validation=false;
@@ -514,8 +519,10 @@ int main()
     ReferenceStringLength=i;
     //Print the header part
     PrintHeader(true, usedPolicy);
+    //Check if the policy needed is one of our four polices
     if(!validPolicy(usedPolicy))
     {
+        //Policy is not one of our four polices we will scan again
         while(!validPolicy(usedPolicy))
         {
             printf("\n");
@@ -533,7 +540,6 @@ int main()
             ArrayPriorityRequests=(int*)malloc(sizeof(int)*ProcessFrames);
             LRU();
             free(ArrayPriorityRequests);
-
         }
         else if(strcmp("OPTIMAL",usedPolicy)==0)
         {
@@ -546,10 +552,8 @@ int main()
             free(ArrayClockBits);
         }
     }
-
     free(usedPolicy);
     free(ArrayEntry);
     free(ArrayReference);
     return 0;
 }
-
